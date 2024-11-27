@@ -26,8 +26,8 @@ def check_safety(x_image, sensitivity: float):
     pil_image = Image.fromarray((x_image[0] * 255).astype('uint8'))
     
     try:
-        # 根据灵敏度调整置信度阈值
-        conf_threshold = 0.3 + sensitivity
+        # sensitivity直接作为置信度阈值使用
+        conf_threshold = sensitivity
         
         detections = detect_censors(
             pil_image,
@@ -90,9 +90,9 @@ class NsfwCheckScript(scripts.Script):
         )
         sensitivity = gr.Slider(
             label="NSFW Detection Sensitivity",
-            minimum=-0.2,
-            maximum=0.2,
-            value=0.0,
+            minimum=0.1,
+            maximum=0.99,
+            value=0.3,
             step=0.01,
             elem_id=self.elem_id("sensitivity")
         )
